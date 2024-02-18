@@ -5,6 +5,10 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background-image: url('../../asset/back.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 .wrapper{
  

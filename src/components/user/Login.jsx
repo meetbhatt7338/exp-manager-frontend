@@ -23,6 +23,7 @@ export const Login = () => {
         const res = await axios.post("http://localhost:4000/api/user/login", user)
         console.log('res' , res.data.status)
         if(res.data.status == 'success'){
+          localStorage.setItem('id',res.data.id)
           toast.success(` Welcome to Expense Manager`, {
             position: "top-right",
             autoClose: 2000,
@@ -36,8 +37,10 @@ export const Login = () => {
           });
 
           setTimeout(()=>{
-            navigate('/home')
-          },3000)
+            if(res.data.role.name == 'user'){
+            navigate('/user/dashboard')
+            }
+          },2200)
         }
       } catch (err) {
         console.log(err)

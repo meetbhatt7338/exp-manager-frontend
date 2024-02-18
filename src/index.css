@@ -11,11 +11,7 @@ body {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
-  background-image: url('./asset/back.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  
 
   
 
