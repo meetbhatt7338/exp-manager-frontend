@@ -6,6 +6,7 @@ import { ToastContainer, Zoom, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import addImage from '../../assets/img/add.jpg';
 import {
   createTheme,
   CssBaseline,
@@ -29,8 +30,10 @@ export const AddCategory = () => {
     formState: { errors },
   } = useForm({ mode: "onTouched" });
   const [expenseCategory, setexpenseCategory] = useState([]);
+  const [goals, setgoals] = useState([])
   const [mode, setmode] = useState("");
   const [category, setcategory] = useState("");
+  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -42,32 +45,45 @@ export const AddCategory = () => {
     setmode(e.target.value);
   };
 
+  const handleChangeGoal = (e)=>{
+    setgoals(e.target.value);
+  }
+
   const getExpenseCategory = async () => {
     const res = await axios.get("http://localhost:4000/api/expensecategory");
     // console.log(res.data.data)
     setexpenseCategory(res.data.data);
   };
 
+  const getGoal = async()=>{
+    const id = localStorage.getItem('id')
+    const res = await axios.get(`http://localhost:4000/api/goalbyuser/${id}`)
+    // console.log(res.data.data)
+    setgoals(res.data.data)
+  }
+
   useEffect(() => {
     getExpenseCategory();
+    getGoal();
   }, []);
 
   //data handle here..................
   const submitHandler = async (data) => {
     const expenseData = {
+      goal:data.goal,
       title: data.title,
       amount: data.amount,
       category: category,
       user: localStorage.getItem("id"),
       mode: mode,
     };
-    console.log(expenseData);
+    // console.log(expenseData);
     try {
       const res = await axios.post(
         "http://localhost:4000/api/expense",
         expenseData
       );
-      console.log("res", res);
+      // console.log("res", res);
       if (res.data.status == "success") {
         toast.success("Successfully added", {
           position: "top-right",
@@ -81,11 +97,11 @@ export const AddCategory = () => {
           transition: Zoom,
         });
         setTimeout(() => {
-          navigate(`/expense/list/${expenseData.user}`);
+          navigate('/list');
         }, 2000);
       }
     } catch (error) {
-      console.log("errerer", error);
+      // console.log("errerer", error);
     }
   }; // end of submithandler
 
@@ -139,12 +155,15 @@ export const AddCategory = () => {
   };
   const defaultTheme = createTheme();
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={defaultTheme} style={{backgroundColor: 'radial-gradient(circle, #ff7e5f, #feb47b)'
+      
+    }} >
       <Typography
         variant="h3"
         align="center"
         color="textPrimary"
-        sx={{ color: "blue", mt: 2, fontFamily: "Lato" }}
+        sx={{ color: "#2E3B55", mt: 2, fontFamily: "Lato" }}
+        
       >
         ADD EXPENSE
       </Typography>
@@ -170,26 +189,40 @@ export const AddCategory = () => {
           borderRadius: "8px",
           mt: 2,
           ml: 2,
-
           p: 2,
-        }}
+        }}    
       >
-        <Grid
-          item
-          container
-          style={{ height: "100vh", backgroundColor: "", display: "flex" }}
-        >
+        
           <Grid
             item
-            xs={12}
+            xs={6}
             sm={6}
             md={6}
             lg={6}
             xl={6}
-            sx={{ ml: 1 }}
-            style={{ backgroundColor: "" }}
+            // sx={{ ml: 1 }}
+            style={{ backgroundColor: "" ,}}
+           
           >
             <Box component="form" onSubmit={handleSubmit(submitHandler)}>
+            <FormControl fullWidth margin="normal">
+                <InputLabel id="demo-simple-select-label">Add Into</InputLabel>
+                <Select {...register("goal")}
+                  defaultValue=""
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Add Into"
+                  // onChange={handleChangeGoal}
+                >
+                  {goals?.map((goal) => {
+                    return (
+                      <MenuItem key={goal._id} value={goal._id}>
+                        {goal.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
               <TextField
                 label="Title"
                 variant="outlined"
@@ -247,7 +280,7 @@ export const AddCategory = () => {
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
+                color="secondary"
                 fullWidth
                 sx={{ mt: 2 }}
               >
@@ -255,8 +288,23 @@ export const AddCategory = () => {
               </Button>
             </Box>
           </Grid>
+          <Grid
+            item
+            xs={6}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            // sx={{ ml: 1 }}
+            style={{ backgroundImage: `url(${addImage}) `, height:'110vh',
+            backgroundSize: 'cover',  }}
+           
+          ></Grid>
+          
+          
+     
         </Grid>
-      </Grid>
+ 
     </ThemeProvider>
   );
 };

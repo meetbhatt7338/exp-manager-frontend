@@ -1,6 +1,6 @@
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import "./signup.css";
+import "../../assets/css/signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer, Zoom, toast } from "react-toastify";
@@ -33,8 +33,11 @@ export const SingUp = () => {
             "http://localhost:4000/api/user",
             optimisedUser
           );
+          // const id = res._id.toString();
+          // console.log('id' , res)
+          localStorage.setItem('id',res.data.data._id)
           // console.log('data added' , res)
-          toast.success(`Hello, ${data.firstname} Welcome to Expense Manager`, {
+          toast.success(`Hello, ${data.firstName} Welcome to Expense Manager`, {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -46,7 +49,7 @@ export const SingUp = () => {
             transition: Zoom,
           });
           setTimeout(() => {
-            navigate("/");
+            navigate("/dashboard");
           }, 3000);
         } catch (err) {
           console.log(err);
@@ -91,7 +94,7 @@ export const SingUp = () => {
   }; // end of submithandler
 
   const validation = {
-    firstname: {
+    firstName: {
       required: {
         value: true,
         message: "*First Name is required",
@@ -101,7 +104,7 @@ export const SingUp = () => {
         message: "*name should be than one character",
       },
     },
-    lastname: {
+    lastName: {
       required: {
         value: true,
         message: "*First Name is required",
@@ -163,10 +166,10 @@ export const SingUp = () => {
               type="text"
               name="firstName"
               placeholder="First Name"
-              {...register("firstName", validation.firstname)}
+              {...register("firstName", validation.firstName)}
             />
             <FaUser className="icon" />
-            <span>{errors.firstname?.message}</span>
+            <span>{errors.firstName?.message}</span>
           </div>
 
           <div className="input-box">
@@ -174,10 +177,10 @@ export const SingUp = () => {
               type="text"
               name="lastName"
               placeholder="Last Name"
-              {...register("lastName", validation.lastname)}
+              {...register("lastName", validation.lastName)}
             />
             <FaUser className="icon" />
-            <span>{errors.lastname?.message}</span>
+            <span>{errors.lastName?.message}</span>
           </div>
 
           <div className="input-box">
@@ -218,19 +221,25 @@ export const SingUp = () => {
               <input type="checkbox" />
               Remember me
             </label>
-            <a href="#">Forgot password</a>
+            <Link to={''}>Forgot password</Link>
           </div>
 
           <button type="submt">SignUp</button>
 
           <div className="register-link">
             <p>
-              You have an account? <Link to={"/"}>Login</Link>
+              You have an account? <Link to={"/login"}>Login</Link>
             </p>
           </div>
         </form>
         {/* --------------------------- */}
       </div>
+      <div className='wrapper1'>
+  
+      <h1 class="animated-text">Welcome  To Expense Manager</h1>
+      <p  className='bg'></p>
+    </div>
       </div>
+      // </div>
   );
 };

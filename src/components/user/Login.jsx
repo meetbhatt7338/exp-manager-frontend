@@ -1,9 +1,8 @@
 import React from 'react'
-import { FaUser ,  FaLock } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import './signup.css'
+import '../../assets/css/signup.css'
 import { Link, useNavigate } from 'react-router-dom';
-import { SingUp } from './SingUp';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ToastContainer, Zoom, toast } from "react-toastify";
@@ -18,10 +17,10 @@ export const Login = () => {
         email : data.email.trim(),
         password: data.password.trim()
       }
-      console.log('user',user)
+      // console.log('user',user)
       try {
         const res = await axios.post("http://localhost:4000/api/user/login", user)
-        console.log('res' , res.data.status)
+        // console.log('res' , res.data.status)
         if(res.data.status == 'success'){
           localStorage.setItem('id',res.data.id)
           toast.success(` Welcome to Expense Manager`, {
@@ -38,7 +37,7 @@ export const Login = () => {
 
           setTimeout(()=>{
             if(res.data.role.name == 'user'){
-            navigate('/user/dashboard')
+            navigate('/dashboard')
             }
           },2200)
         }
@@ -79,6 +78,7 @@ export const Login = () => {
     
   };
 
+  
   return (
     <div className='main'>
       <ToastContainer
@@ -93,6 +93,9 @@ export const Login = () => {
         pauseOnHover
         theme="dark"
       />
+      <div className="bground">
+
+      </div>
     <div className='wrapper'>
         <form onSubmit={handleSubmit(submithandler)}>
             <h1>Login</h1>
@@ -122,6 +125,12 @@ export const Login = () => {
             </div>
         </form>
     </div>
+    <div className='wrapper1'>
+  
+    <h1 className="animated-text">Welcome Back To Expense Manager</h1>
+    <p  className='bg'></p>
+  </div>
+        
     </div>
   )
 }//end if login
