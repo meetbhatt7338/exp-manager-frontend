@@ -107,7 +107,7 @@ export const GoalList = () => {
     const id = localStorage.getItem("id");
     try {
       
-      const res = await axios.get(`http://localhost:4000/api/goalbyuser/${id}`);
+      const res = await axios.get(`/api/goalbyuser/${id}`);
     
     // console.log("rows", res.data);
     const row = res.data.data.map((r) => {
@@ -138,7 +138,7 @@ export const GoalList = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.delete(
-          `http://localhost:4000/api/deletegoal/${id}`
+          `/api/deletegoal/${id}`
         );
         getGoalByUser();
         Swal.fire({

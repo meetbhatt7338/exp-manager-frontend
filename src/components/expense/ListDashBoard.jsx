@@ -102,7 +102,7 @@ import {
   
     const getExpenseList = async () => {
       const id = localStorage.getItem("id");
-      const res = await axios.get(`http://localhost:4000/api/expense/${id}`);
+      const res = await axios.get(`/api/expense/${id}`);
       // console.log('rows',res.data.data)
       const row = res.data.data.map((r) => {
         return {
@@ -119,7 +119,7 @@ import {
       setrows(row);
     };
     const handleDelete=async(id)=>{
-      const res = await axios.delete(`http://localhost:4000/api/expensedelete/${id}`)
+      const res = await axios.delete(`/api/expensedelete/${id}`)
       // console.log(res)
       getExpenseList(); 
     }

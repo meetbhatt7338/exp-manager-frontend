@@ -30,7 +30,7 @@ export const AddRevenue = () => {
       income: data.income,
       name:data.name,
     }
-      const res = await axios.post("http://localhost:4000/api/addrevenue",final)
+      const res = await axios.post("/api/addrevenue",final)
      
       if(res.status == 200){
         toast.success("Successfully added", {

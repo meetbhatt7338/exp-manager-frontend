@@ -15,7 +15,7 @@ export const Profile = () => {
   const userData = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/api/user/${localStorage.getItem("id")}`
+        `/api/user/${localStorage.getItem("id")}`
       );
       setuser(res.data.data);
       // console.log(res.data.data);
@@ -47,7 +47,7 @@ export const Profile = () => {
   const handlefileapi=async()=>{
     const formData = new FormData();
     formData.append("myProfile", image);
-    const res = await axios.post(`http://localhost:4000/api/upload/${localStorage.getItem('id')}`,formData)
+    const res = await axios.post(`/api/upload/${localStorage.getItem('id')}`,formData)
       // console.log(res.data)
       if(res.data.data.profilImgeUrl){
         toast.success("Successfully Uploaded", {
@@ -68,7 +68,7 @@ export const Profile = () => {
   }
 
   const getProfile =async()=>{
-    const getimageurl = await axios.get(`http://localhost:4000/api/imagebyuser/${localStorage.getItem('id')}`)
+    const getimageurl = await axios.get(`/api/imagebyuser/${localStorage.getItem('id')}`)
       setimgurl(getimageurl.data.data[getimageurl.data.data.length-1]?.profilImgeUrl)
     // console.log("url",getimageurl.data.data[getimageurl.data.data.length-1]?.profilImgeUrl)
   }

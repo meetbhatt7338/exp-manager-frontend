@@ -104,7 +104,7 @@ import Swal from "sweetalert2";
     ];
     const id = useParams().id
     const getExpenseList = async () => {
-      const res = await axios.get(`http://localhost:4000/api/expensebygoal/${id}`);
+      const res = await axios.get(`/api/expensebygoal/${id}`);
       // console.log('rows',res.data.data)
       const row = res.data.data.map((r) => {
         return ({
@@ -133,7 +133,7 @@ import Swal from "sweetalert2";
         confirmButtonText: "Yes, delete it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const res = await axios.delete(`http://localhost:4000/api/expensedelete/${id}`)
+          const res = await axios.delete(`/api/expensedelete/${id}`)
           getExpenseList();
           Swal.fire({
             title: "Deleted!",
@@ -198,7 +198,7 @@ import Swal from "sweetalert2";
   
           <Button
             component={Link}
-            to="/add"
+            to="/viewGoal"
             variant="contained"
             color="secondary"
             sx={{ m: 3, mt: 2 }}

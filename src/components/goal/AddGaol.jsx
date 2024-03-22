@@ -39,7 +39,7 @@ export const AddGaol = () => {
     // console.log("res", data);
     const ddata = Object.assign(data,{user})
     // console.log(ddata)
-    const res = await axios.post('http://localhost:4000/api/goal',ddata);
+    const res = await axios.post('/api/goal',ddata);
 
       if (res.data.status == "success") {
         toast.success("Successfully added", {

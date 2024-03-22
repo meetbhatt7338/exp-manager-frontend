@@ -28,7 +28,7 @@ export const ListCategory = () => {
   const searchRecordeHandler = async (e) => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/api/filterexpense/${localStorage.getItem("id")}`,
+        `/api/filterexpense/${localStorage.getItem("id")}`,
         {
           params: {
             title: e.target.value,
@@ -127,7 +127,7 @@ export const ListCategory = () => {
   const getExpenseList = async () => {
     setisLoading(true);
     const id = localStorage.getItem("id");
-    const res = await axios.get(`http://localhost:4000/api/expense/${id}`);
+    const res = await axios.get(`/api/expense/${id}`);
     // console.log("rows", res.data.data);
     const row = res.data.data.map((r) => {
       return {
@@ -155,7 +155,7 @@ export const ListCategory = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.delete(
-          `http://localhost:4000/api/expensedelete/${id}`
+          `/api/expensedelete/${id}`
         );
         // console.log(res);
         getExpenseList();

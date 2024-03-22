@@ -45,7 +45,7 @@ export const Nav = () => {
   const getProfile = async () => {
     try {
       const getimageurl = await axios.get(
-        `http://localhost:4000/api/imagebyuser/${localStorage.getItem("id")}`
+        `/api/imagebyuser/${localStorage.getItem("id")}`
       );
       setimgurl(
         getimageurl.data.data[getimageurl.data.data.length - 1]?.profilImgeUrl

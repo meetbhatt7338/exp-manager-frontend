@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import "../../assets/css/dashboard.css";
 import axios from "axios";
-
 import { BarChart } from "@mui/x-charts/BarChart";
 import { axisClasses } from "@mui/x-charts";
 import { ListDashBoard } from "../expense/ListDashBoard";
@@ -28,10 +27,8 @@ export const Dashboard = () => {
   const [chartBarData, setchartBarData] = useState([]);
 
 
-
-
-
   let charData = [];
+  
   const getExpenseList = async () => {
     const id = localStorage.getItem("id");
     let totalgrocery = 0,
@@ -41,7 +38,8 @@ export const Dashboard = () => {
       totalmedical = 0,
       totalbill = 0,
       totalGoal = 0;
-    const res = await axios.get(`http://localhost:4000/api/expense/${id}`);
+      
+    const res = await axios.get(`/api/expense/${id}`);
     // console.log("res",res)
     res?.data?.data.forEach((am) => {
 
@@ -75,7 +73,7 @@ export const Dashboard = () => {
     const groupedExpenses = {};
 
     const res1 = await axios.get(
-      `http://localhost:4000/api/getrevenue/${localStorage.getItem("id")}`
+      `/api/getrevenue/${localStorage.getItem("id")}`
     );
 
     res?.data?.data.forEach((expense) => {
@@ -98,6 +96,7 @@ export const Dashboard = () => {
 
     let sumMWE = 0,
       sumMWI = 0;
+      
     for (const month in groupedExpenses) {
       if (Object.hasOwnProperty.call(groupedExpenses, month)) {
      
@@ -128,10 +127,9 @@ export const Dashboard = () => {
         });
       }
     }
-  
     setchartBarData(charData);
   };
-
+  
   const data = {
     labels: ["shooping", "grocery", "fuel", "medical", "bill", "other"],
     datasets: [
@@ -169,8 +167,8 @@ export const Dashboard = () => {
         label: "",
       },
     ],
-    width: 450,
-    height: 350,
+    width: 400,
+    height: 400,
     sx: {
       [`.${axisClasses.left} .${axisClasses.label}`]: {
         transform: "translate(-20px, 0)",
@@ -179,6 +177,7 @@ export const Dashboard = () => {
   };
 
   const dataset = chartBarData;
+  // console.log("dataset",dataset.length)
 
 
 
@@ -316,10 +315,15 @@ export const Dashboard = () => {
                 <div className="card-head">
                   <h2>Monthly expenditure analytics</h2>
                 </div>
+             
+                  
                 <div className="card-progress" style={{ margin: "60px auto" }}>
                   {settime == true ? (
+                    
                     <BarChart
-                      dataset={dataset}
+                   
+                    // dataset={[""]}
+                      dataset= {dataset.length>0  ?    dataset :  [""] }
                       xAxis={[{ scaleType: "band", dataKey: "month" }]}
                       series={[
                         {

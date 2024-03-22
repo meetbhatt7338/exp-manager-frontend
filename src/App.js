@@ -20,11 +20,14 @@ import { Profile } from './components/profile/Profile';
 import { Footer } from './components/user/Footer';
 import { Logout } from './components/user/Logout';
 import { LandingPage } from './components/LandingPage';
+import axios from 'axios';
 
 
 function App() {
   const navigate = useNavigate();
 
+  // axios.defaults.baseURL = "http://localhost:4000"
+  axios.defaults.baseURL = "https://exp-manager-backend.onrender.com"
   // Use useEffect to update the path whenever the URL changes
   useEffect(() => {
     const path = window.location.pathname;

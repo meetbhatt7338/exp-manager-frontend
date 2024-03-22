@@ -30,7 +30,7 @@ export const SingUp = () => {
 
         try {
           const res = await axios.post(
-            "http://localhost:4000/api/user",
+            "/api/user",
             optimisedUser
           );
           // const id = res._id.toString();

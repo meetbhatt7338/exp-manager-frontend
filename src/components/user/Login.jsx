@@ -19,8 +19,8 @@ export const Login = () => {
       }
       // console.log('user',user)
       try {
-        const res = await axios.post("http://localhost:4000/api/user/login", user)
-        // console.log('res' , res.data.status)
+        const res = await axios.post("/api/user/login", user)
+        // console.log('res' , res.data)
         if(res.data.status == 'success'){
           localStorage.setItem('id',res.data.id)
           toast.success(` Welcome to Expense Manager`, {
@@ -36,13 +36,13 @@ export const Login = () => {
           });
 
           setTimeout(()=>{
-            if(res.data.role.name == 'user'){
+            // if(res?.data?.role?.name == 'user'){
             navigate('/dashboard')
-            }
+            // }
           },2200)
         }
       } catch (err) {
-        console.log(err)
+        // console.log(err)
         toast.error("Invalid Credentials!!", {
           position: "top-right",
           autoClose: 2000,

@@ -27,7 +27,7 @@ export const UpdateRevenue = () => {
     mode: "onChange",
     defaultValues: async () => {
       const res = await axios.get(
-        `http://localhost:4000/api/getrevenuebyid/${id}`
+        `/api/getrevenuebyid/${id}`
       );
       // console.log("res", res);
       return res.data.data[0];
@@ -44,7 +44,7 @@ export const UpdateRevenue = () => {
     };
     try {
       const res = await axios.put(
-        `http://localhost:4000/api/updaterevenue/${revenueid}`,
+        `/api/updaterevenue/${revenueid}`,
         final
       );
 

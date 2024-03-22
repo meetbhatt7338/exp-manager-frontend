@@ -35,7 +35,7 @@ export const EditExpense = () => {
   } = useForm({
     mode: "onTouched",
     defaultValues: async () => {
-      const res = await axios.get("http://localhost:4000/api/expense/" +localStorage.getItem("id") +"/" +id);
+      const res = await axios.get("/api/expense/" +localStorage.getItem("id") +"/" +id);
       return res.data.data[0];
     },
   });
@@ -44,7 +44,7 @@ export const EditExpense = () => {
   //get old data from api
 //   const getOldData = async () => {
 //     const res = await axios.get(
-//       "http://localhost:4000/api/expense/" +
+//       "/api/expense/" +
 //         localStorage.getItem("id") +
 //         "/" +
 //         id
@@ -58,7 +58,7 @@ export const EditExpense = () => {
   }, []);
 
   const getExpenseCategory = async () => {
-    const res = await axios.get("http://localhost:4000/api/expensecategory");
+    const res = await axios.get("/api/expensecategory");
     // console.log(res.data.data)
     setexpenseCategory(res.data.data);
   };
@@ -75,7 +75,7 @@ export const EditExpense = () => {
     // console.log(expenseData);
     try {
       const res = await axios.put(
-        `http://localhost:4000/api/expenseupdate/${id}`,expenseData
+        `/api/expenseupdate/${id}`,expenseData
       );
       console.log("res", res);
       if (res.data.status == "success") {

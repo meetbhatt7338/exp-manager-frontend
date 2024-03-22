@@ -50,14 +50,14 @@ export const AddCategory = () => {
   }
 
   const getExpenseCategory = async () => {
-    const res = await axios.get("http://localhost:4000/api/expensecategory");
+    const res = await axios.get("/api/expensecategory");
     // console.log(res.data.data)
     setexpenseCategory(res.data.data);
   };
 
   const getGoal = async()=>{
     const id = localStorage.getItem('id')
-    const res = await axios.get(`http://localhost:4000/api/goalbyuser/${id}`)
+    const res = await axios.get(`/api/goalbyuser/${id}`)
     // console.log(res.data.data)
     setgoals(res.data.data)
   }
@@ -80,7 +80,7 @@ export const AddCategory = () => {
     // console.log(expenseData);
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/expense",
+        "/api/expense",
         expenseData
       );
       // console.log("res", res);

@@ -23,7 +23,7 @@ export const ListRevenue = () => {
 
     const listrevenue = async () => {
         const id = localStorage.getItem("id");
-        const res = await axios.get(`http://localhost:4000/api/getrevenue/${id}`);
+        const res = await axios.get(`/api/getrevenue/${id}`);
         // console.log('rows',res.data.data)
         const row = res.data.data.map((r) => {
           return {
@@ -49,7 +49,7 @@ export const ListRevenue = () => {
           confirmButtonText: "Yes, delete it!",
         }).then(async (result) => {
           if (result.isConfirmed) {
-            await axios.delete(`http://localhost:4000/api/removerevenue/${id}`)
+            await axios.delete(`/api/removerevenue/${id}`)
             listrevenue();
             Swal.fire({
               title: "Deleted!",
