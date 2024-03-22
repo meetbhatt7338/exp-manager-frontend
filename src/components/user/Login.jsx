@@ -25,7 +25,7 @@ export const Login = () => {
           localStorage.setItem('id',res.data.id)
           toast.success(` Welcome to Expense Manager`, {
             position: "top-right",
-            autoClose: 2000,
+            autoClose: 1500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -33,13 +33,16 @@ export const Login = () => {
             progress: undefined,
             theme: "dark",
             transition: Zoom,
+            onClose: () => {
+              navigate('/dashboard');
+            }
           });
 
-          setTimeout(()=>{
+          
+            // navigate('/dashboard')
             // if(res?.data?.role?.name == 'user'){
-            navigate('/dashboard')
             // }
-          },2200)
+          
         }
       } catch (err) {
         // console.log(err)
