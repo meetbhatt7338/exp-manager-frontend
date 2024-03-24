@@ -21,13 +21,15 @@ import { Footer } from './components/user/Footer';
 import { Logout } from './components/user/Logout';
 import { LandingPage } from './components/LandingPage';
 import axios from 'axios';
+import { ForgotPassword } from './components/user/ForgotPassword';
+import { ResestPassword } from './components/user/ResestPassword';
 
 
 function App() {
   const navigate = useNavigate();
 
-  // axios.defaults.baseURL = "http://localhost:4000"
-  axios.defaults.baseURL = "https://exp-manager-backend.onrender.com"
+  axios.defaults.baseURL = "http://localhost:4000"
+  // axios.defaults.baseURL = "https://exp-manager-backend.onrender.com"
   // Use useEffect to update the path whenever the URL changes
   useEffect(() => {
     const path = window.location.pathname;
@@ -56,6 +58,8 @@ function App() {
         <Route path='/logout' element={<Logout />}></Route>
         </Route>
         <Route path='/*' element={<PageNotFound />}></Route>
+        <Route path='/forgotpassword' element={<ForgotPassword/>}></Route>
+        <Route path='/resetpassword' element={<ResestPassword/>}></Route>
        
       </Routes>
       {window.location.pathname === '/login' || window.location.pathname === '/signup' ||window.location.pathname === '' || window.location.pathname === '/list' ? null : <Footer />}

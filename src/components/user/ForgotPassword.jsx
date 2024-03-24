@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaLock, FaLockOpen } from "react-icons/fa";
+import React from 'react'
+import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import "../../assets/css/signup.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,32 +8,28 @@ import axios from "axios";
 import { ToastContainer, Zoom, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const Login = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
-  const navigate = useNavigate();
+export const ForgotPassword = () => {
+    const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState:{errors}
   } = useForm({ mode: "onTouched" });
   const submithandler = async (data) => {
+   
     const user = {
       email: data.email.trim(),
-      password: data.password.trim(),
+    
     };
     // console.log('user',user)
     try {
-      const res = await axios.post("/api/user/login", user);
-      console.log("res", res);
+      const res = await axios.post("/api/user/employeexist", user);
+    
       if (res.data.status == "success") {
         localStorage.setItem("id", res.data.id);
-        toast.success(` Welcome to Expense Manager`, {
+        toast.success(` User successfully found`, {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -44,16 +40,14 @@ export const Login = () => {
         });
       
         setTimeout(() => {
+    
+          navigate("/resetpassword"  , {state:{email:res?.data?.data.email}});
          
-          navigate("/dashboard");
-          if (res?.data?.role?.name == "user") {
-            
-          }
-        }, 2000);
+        }, 1500);
       }
     } catch (err) {
       // console.log(err)
-      toast.error("Invalid Credentials!!", {
+      toast.error("User Not Exist!!", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -74,18 +68,8 @@ export const Login = () => {
         message: "*Email is required",
       },
     },
-    password: {
-      required: {
-        value: true,
-        message: "*Password is required",
-      },
-      minLength: {
-        value: 6,
-        message: "Password length should be more than 6 character",
-      },
-    },
-  };
-
+    
+  }
   return (
     <div className="main">
       <ToastContainer
@@ -103,7 +87,7 @@ export const Login = () => {
       <div className="bground"></div>
       <div className="wrapper">
         <form onSubmit={handleSubmit(submithandler)}>
-          <h1>Login</h1>
+          <h1>Forgot Password</h1>
 
           <div className="input-box">
             <input
@@ -116,44 +100,18 @@ export const Login = () => {
             <span>{errors.email?.message}</span>
           </div>
 
-          <div className="input-box">
-            <input
-            type={passwordVisible ? "text" : "password"}
-              
-              name="password"
-              placeholder="password"
-              {...register("password", validation.password)}
-            />
-           {passwordVisible ? (
-        <FaLockOpen className="icon" onClick={togglePasswordVisibility} />
-      ) : (
-        <FaLock className="icon" onClick={togglePasswordVisibility} />
-      )}
-            <span>{errors.password?.message}</span>
-          </div>
+        
 
-          <div className="remember-forgot">
-            <label>
-              <input type="checkbox" />
-              Remember me
-            </label>
-           
-            <Link to={'/forgotpassword'}>Forgot password</Link>
-          </div>
+          
 
-          <button type="submt">Login</button>
+          <button type="submt">ENTER</button>
 
-          <div className="register-link">
-            <p>
-              Don't have an account? <Link to={"/signup"}>SignUp</Link>
-            </p>
-          </div>
+        
         </form>
       </div>
-      <div className="wrapper1">
-        <h1 className="animated-text">Welcome Back To Expense Manager</h1>
-        <p className="bg"></p>
-      </div>
+     
     </div>
   );
 }; //end if login
+
+ 

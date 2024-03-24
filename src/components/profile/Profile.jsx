@@ -7,10 +7,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import UploadIcon from '@mui/icons-material/Upload';
 import { ToastContainer, Zoom, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
   const [user, setuser] = useState({});
+  const navigate = useNavigate();
 
+  const changePass=()=>{
+      navigate('/resetpassword',{state:{email:user[0]?.email}})
+  }
   //get user
   const userData = async () => {
     try {
@@ -180,7 +185,18 @@ export const Profile = () => {
                       {user[0]?.email}
                     </div>
                     <div class="h5 mt-4">
-                      {/* <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer */}
+                      <i class="ni business_briefcase-24 mr-2"></i>
+                      
+                      <Button
+                   
+                    
+                    variant="contained"
+                    color="secondary"
+                    sx={{ mt: 2, mr: 3.5, width: "20%" }}
+                    onClick={()=>{changePass()}}
+                  >
+                    Change Password
+                  </Button>
                     </div>
                     <div>
                       {/* <i class="ni education_hat mr-2"></i>University of Computer Science */}

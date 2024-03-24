@@ -1,4 +1,4 @@
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaLockOpen } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import "../../assets/css/signup.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,8 +6,14 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, Zoom, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useState } from "react";
 
 export const SingUp = () => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
   const navigate = useNavigate();
   const {
     register,
@@ -196,23 +202,33 @@ export const SingUp = () => {
 
           <div className="input-box">
             <input
-              type="password"
+            type={passwordVisible ? "text" : "password"}
+              
               name="password"
               placeholder="Password"
               {...register("password", validation.password)}
             />
-            <FaLock className="icon" />
+           {passwordVisible ? (
+        <FaLockOpen className="icon" onClick={togglePasswordVisibility} />
+      ) : (
+        <FaLock className="icon" onClick={togglePasswordVisibility} />
+      )}
             <span>{errors.password?.message}</span>
           </div>
 
           <div className="input-box">
             <input
-              type="password"
+            type={passwordVisible ? "text" : "password"}
+             
               name="cpassword"
               placeholder="Conform Password"
               {...register("cpassword", validation.cpassword)}
             />
-            <FaLock className="icon" />
+            {passwordVisible ? (
+        <FaLockOpen className="icon" onClick={togglePasswordVisibility} />
+      ) : (
+        <FaLock className="icon" onClick={togglePasswordVisibility} />
+      )}
             <span>{errors.cpassword?.message}</span>
           </div>
 
@@ -221,7 +237,7 @@ export const SingUp = () => {
               <input type="checkbox" />
               Remember me
             </label>
-            <Link to={''}>Forgot password</Link>
+            
           </div>
 
           <button type="submt">SignUp</button>

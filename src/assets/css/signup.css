@@ -1,8 +1,19 @@
 /* @media() */
+@media screen and (max-width: 480px) {
+   
+    
+ .wrapper1{
+    display: none;
+   }
+.wrapper{
+    width: 80%;
+   }
+}
+
 
 .main{
 
-    display: flex;
+  display: flex;
   justify-content: space-evenly;
   align-items: center;
   min-height: 100vh;
@@ -16,8 +27,8 @@
 
 .wrapper{
  
-    margin: auto;
-    width: 40vw;
+    /* width: 40vw; */
+    margin:10px auto;
     background-color: transparent;
     border: 2px solid rgba(255, 255, 255, 0.6);
     color: #fff;
@@ -27,6 +38,8 @@
     box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.2);
     
 }
+
+
 
 .wrapper h1{
     font-size: 36px;
@@ -57,7 +70,7 @@
     border: none;
     outline: none;
     border: 2px solid rgb(255, 255, 255 ,.6);
-    border-radius: 40px;
+    border-radius: 15px;
     font-size: 16px;
     color: #fff;
     padding: 20px 45px 20px 20px;
@@ -131,13 +144,13 @@
 .wrapper1{
  
   
-    width: 40vw;
+    /* width: 40vw; */
     height: 90vh;
     margin: auto;
     background-color: transparent;
     /* border: 2px solid rgba(209, 27, 27, 0.6); */
     color: #fff;
-    padding: 30px 40px;
+    /* padding: 30px 40px; */
     border-radius: 20px;
     backdrop-filter: blur(30px) ;
     box-shadow: 10px 10px 10px rgba(219, 30, 30, 0.2);
