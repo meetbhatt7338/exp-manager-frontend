@@ -28,7 +28,7 @@ import { ResestPassword } from './components/user/ResestPassword';
 function App() {
   const navigate = useNavigate();
   //meet
-  
+  // axios.defaults.baseURL = "http://localhost:4000"
   axios.defaults.baseURL = "https://exp-manager-backend.onrender.com"
   // Use useEffect to update the path whenever the URL changes
   useEffect(() => {
