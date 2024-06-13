@@ -18,6 +18,7 @@ import {
   TextField,
   Typography,
   Button,
+  
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { ThemeProvider } from "styled-components";
@@ -29,25 +30,14 @@ export const AddCategory = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onTouched" });
+  const style = {"fontSize":"14.5px","color":"red","marginLeft":"10px","marginTop":"10px","fontWeight":"normal"}
   const [expenseCategory, setexpenseCategory] = useState([]);
   const [goals, setgoals] = useState([])
-  const [mode, setmode] = useState("");
-  const [category, setcategory] = useState("");
+ 
   
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    // console.log(e.target.value)
-    setcategory(e.target.value);
-  };
-  const handleChangeMode = (e) => {
-    // console.log(e.target.value)
-    setmode(e.target.value);
-  };
-
-  const handleChangeGoal = (e)=>{
-    setgoals(e.target.value);
-  }
+ 
 
   const getExpenseCategory = async () => {
     const res = await axios.get("/api/expensecategory");
@@ -73,9 +63,9 @@ export const AddCategory = () => {
       goal:data.goal,
       title: data.title,
       amount: data.amount,
-      category: category,
+      category: data.category,
       user: localStorage.getItem("id"),
-      mode: mode,
+      mode: data.mode,
     };
     // console.log(expenseData);
     try {
@@ -102,56 +92,54 @@ export const AddCategory = () => {
       }
     } catch (error) {
       // console.log("errerer", error);
+      toast.error("Something went wrong!!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Zoom,
+      });
     }
   }; // end of submithandler
 
   const validation = {
-    firstname: {
+    title: {
       required: {
         value: true,
-        message: "*First Name is required",
+        message: "*Title is required",
       },
       minLength: {
         value: 2,
-        message: "*name should be than one character",
+        message: "*name should be more than one character",
       },
     },
-    lastname: {
+    amount: {
       required: {
         value: true,
-        message: "*First Name is required",
+        message: "*Amount is required",
       },
-      minLength: {
-        value: 2,
-        message: "*Name should be more than one character",
+      pattern: {
+        value: /^[0-9]+(\.[0-9]+)?$/,
+        message: "*Amount must be a number",
       },
+     
     },
-    email: {
+    category: {
       required: {
         value: true,
-        message: "*Email is required",
+        message: "*Choose your transaction's category",
       },
     },
-    password: {
-      required: {
-        value: true,
-        message: "*Password is required",
-      },
-      minLength: {
-        value: 6,
-        message: "Password length should be more than 6 character",
-      },
-    },
-    cpassword: {
-      required: {
-        value: true,
-        message: "*Password is required",
-      },
-      minLength: {
-        value: 6,
-        message: "Password length should be more than 6 character",
-      },
-    },
+    mode:{
+      required:{
+        value:true,
+        message:"*Choose your transaction's mode",
+      }
+    }
   };
   const defaultTheme = createTheme();
   return (
@@ -211,8 +199,8 @@ export const AddCategory = () => {
                   defaultValue=""
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  label="Add Into"
-                  // onChange={handleChangeGoal}
+                  label="Select Goal State"
+                  
                 >
                   {goals?.map((goal) => {
                     return (
@@ -224,27 +212,35 @@ export const AddCategory = () => {
                 </Select>
               </FormControl>
               <TextField
+                id="outlined-basic"
+                name="title"
                 label="Title"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                {...register("title")}
-              ></TextField>
+                {...register("title",validation.title)}
+                ></TextField>
+
+                <span style={style}>{errors.title?.message}</span>
               <TextField
-                label="amount"
+                label="Amount"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                {...register("amount")}
-              ></TextField>
+                {...register("amount",validation.amount)}
+                
+                >
+                  
+                </TextField>
+              <span style={style}>{errors.amount?.message}</span>
               <FormControl fullWidth margin="normal">
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                <Select
+                <Select  {...register("category",validation.category)}
                   defaultValue=""
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Category"
-                  onChange={handleChange}
+                  // onChange={handleChange}
                 >
                   {expenseCategory?.map((category) => {
                     return (
@@ -254,16 +250,18 @@ export const AddCategory = () => {
                     );
                   })}
                 </Select>
+                {/* <FormHelperText>{errors.category?.message}</FormHelperText> */}
+              <span style={style}>{errors.category?.message}</span>
               </FormControl>
-
               <FormControl fullWidth margin="normal">
                 <InputLabel id="demo-simple-select-label">Mode</InputLabel>
-                <Select
+                <Select  
                   defaultValue=""
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Category"
-                  onChange={handleChangeMode}
+                  // onChange={handleChangeMode}
+                  {...register("mode",validation.mode)}
                 >
                   <MenuItem key={"cash"} value={"cash"}>
                     Cash
@@ -275,6 +273,7 @@ export const AddCategory = () => {
                     Debit
                   </MenuItem>
                 </Select>
+                {errors.mode && <span style={style}>{errors.mode.message}</span>}
               </FormControl>
 
               <Button

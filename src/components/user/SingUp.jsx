@@ -135,6 +135,10 @@ export const SingUp = () => {
         value: 6,
         message: "Password length should be more than 6 character",
       },
+      pattern: {
+        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+        message: "Password must contain uppercase, lowercase, number, special letter ",
+      },
     },
     cpassword: {
       required: {

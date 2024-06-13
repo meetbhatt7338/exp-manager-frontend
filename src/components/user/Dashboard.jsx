@@ -10,6 +10,8 @@ import { axisClasses } from "@mui/x-charts";
 import { ListDashBoard } from "../expense/ListDashBoard";
 import dayjs from "dayjs";
 import { CustomeLoader } from "../CustomeLoader";
+import { ToastContainer, Zoom, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const Dashboard = () => {
@@ -25,6 +27,7 @@ export const Dashboard = () => {
   const [saving, setsaving] = useState();
   const [bill, setbill] = useState();
   const [chartBarData, setchartBarData] = useState([]);
+  const [goatMaxAmount, setgoatMaxAmount] = useState()
 
 
   let charData = [];
@@ -39,10 +42,13 @@ export const Dashboard = () => {
       totalbill = 0,
       totalGoal = 0;
       
+    const resGoal = await axios.get(`/api/goalbyuser/${id}`);
+    const len = resGoal?.data?.data?.length;
+    setgoatMaxAmount(resGoal?.data?.data[len-1]?.maxAmount)
     const res = await axios.get(`/api/expense/${id}`);
     // console.log("res",res)
     res?.data?.data.forEach((am) => {
-
+        // console.log("am:",am)
       if (am.category.name == "grocery") {
         totalgrocery += am.amount;
       } else if (am.category.name == "fuel") {
@@ -56,7 +62,7 @@ export const Dashboard = () => {
       } else {
         totalother += am.amount;
       }
-
+        
       if(am.goal != null){
           totalGoal+=am.amount
       }
@@ -69,6 +75,22 @@ export const Dashboard = () => {
     setshopping(totalshooping);
     setbill(totalbill);
     setgoalTotal(totalGoal)
+
+    if(totalGoal >= resGoal?.data?.data[len-1]?.maxAmount){
+      
+        toast.warn('🤨 Your expenditure on goal state is crossed to limit', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Zoom,
+          });
+      
+    }
 
     const groupedExpenses = {};
 
@@ -128,10 +150,11 @@ export const Dashboard = () => {
       }
     }
     setchartBarData(charData);
+    
   };
-  
+ 
   const data = {
-    labels: ["shooping", "grocery", "fuel", "medical", "bill", "other"],
+    labels: ["shopping", "grocery", "fuel", "medical", "bill", "other"],
     datasets: [
       {
         label: " of expenses",
@@ -159,6 +182,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     getExpenseList();
+    
   }, []);
   //--------------------bar chart------------------------------
   const chartSetting = {
@@ -185,10 +209,24 @@ export const Dashboard = () => {
   const [settime, setsettime] = useState(false);
   setTimeout(() => {
     setsettime(true);
-  }, 2000);
+  }, 1000);
 
   return (
+    
     <div>
+      <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+// transition: Bounce,
+/>
      
       <input type="checkbox" id="menu-toggle" />
 
@@ -210,7 +248,7 @@ export const Dashboard = () => {
                 <div className="card-progress">
                   <small>Montly expenses</small>
                   <div className="card-indicator">
-                    <div className="indicator two" style={{ width: "20%" }} />
+                    <div className="indicator two" style={{ width: "40%" }} />
                   </div>
                   <Button
                     component={Link}
@@ -234,7 +272,7 @@ export const Dashboard = () => {
                 <div className="card-progress">
                   <small>Monthly Revenue</small>
                   <div className="card-indicator">
-                    <div className="indicator one" style={{ width: "60%" }} />
+                    <div className="indicator one" style={{ width: "70%" }} />
                   </div>
 
                   <Button
@@ -260,13 +298,13 @@ export const Dashboard = () => {
               </div>
               <div className="card">
                 <div className="card-head">
-                  <h2>&#8377;{goalTotal}</h2>
+                  <h2>&#8377;{goalTotal}/{goatMaxAmount}</h2>
                   <span className="las la-bullseye" />
                 </div>
                 <div className="card-progress">
                   <small>Set goal to control expenditure</small>
                   <div className="card-indicator">
-                    <div className="indicator three" style={{ width: "40%" }} />
+                    <div className="indicator three" style={{ width: "80%" }} />
                   </div>
                   <Button
                     component={Link}
@@ -297,7 +335,7 @@ export const Dashboard = () => {
                 <div className="card-progress">
                   <small>Monthly Saving</small>
                   <div className="card-indicator">
-                    <div className="indicator four" style={{ width: "30%" }} />
+                    <div className="indicator four" style={{ width: "50%" }} />
                   </div>
                 </div>
               </div>

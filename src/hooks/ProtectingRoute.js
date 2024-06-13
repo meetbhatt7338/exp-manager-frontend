@@ -12,13 +12,6 @@ const useAuth = () => {
     }
   }, []);
   return isAuthenticated;
-
-  // if (localStorage.getItem("id")){
-  //     return true;
-  // }
-  // else{
-  //     return false;
-  // }
 };
 const ProtectedRoute = () => {
   const isAuth = useAuth(); //true or false

@@ -23,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 
 
 export const AddGaol = () => {
+  const style = {"fontSize":"14.5px","color":"red","marginLeft":"10px","marginTop":"10px","fontWeight":"normal"}
+
   const {
  
     register,
@@ -56,56 +58,56 @@ export const AddGaol = () => {
         setTimeout(() => {
           navigate('/add');
         }, 2000);
+      }else{
+        toast.error("Something went wrong!!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Zoom,
+        });
       }
   }; // end of submithandler
 
   const validation = {
-    firstname: {
+    name: {
       required: {
         value: true,
-        message: "*First Name is required",
+        message: "*Goal name is required",
       },
       minLength: {
         value: 2,
-        message: "*name should be than one character",
+        message: "*name should be more than one character",
       },
     },
-    lastname: {
+    maxAmount: {
       required: {
         value: true,
-        message: "*First Name is required",
+        message: "*Amount is required",
       },
-      minLength: {
-        value: 2,
-        message: "*Name should be more than one character",
+      pattern: {
+        value: /^[0-9]+(\.[0-9]+)?$/,
+        message: "*Amount must be a number",
       },
+     
     },
-    email: {
+    endDate: {
       required: {
         value: true,
-        message: "*Email is required",
+        message: "*End Date is required",
       },
     },
-    password: {
+    startDate: {
       required: {
         value: true,
-        message: "*Password is required",
-      },
-      minLength: {
-        value: 6,
-        message: "Password length should be more than 6 character",
+        message: "*Start Date is required",
       },
     },
-    cpassword: {
-      required: {
-        value: true,
-        message: "*Password is required",
-      },
-      minLength: {
-        value: 6,
-        message: "Password length should be more than 6 character",
-      },
-    },
+   
   };
   const defaultTheme = createTheme();
   return (
@@ -162,17 +164,27 @@ export const AddGaol = () => {
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("name")}
+              {...register("name",validation.name)}
             ></TextField>
+            <span style={style}>{errors.name?.message}</span>
             <TextField
               label="max amount"
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("maxAmount")}
+              {...register("maxAmount",validation.maxAmount)}
             ></TextField>
-                <input type="date" name="startDate"  style={{marginRight:'70px',marginTop:'20px' ,padding:'18px'}} {...register("startDate")}/>
-                <input type="date" name="endDate"  style={{marginRight:'70px',marginTop:'20px' ,padding:'18px'}} {...register("endDate")}/>
+            <span style={style}>{errors.maxAmount?.message}</span>
+            <div> 
+              <div>
+                <label htmlFor="" >Start Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="date" name="startDate"  style={{marginRight:'70px',marginTop:'20px' ,padding:'18px'}} {...register("startDate",validation.startDate)}/>
+            <span style={style}>{errors.startDate?.message}</span>
+                </div>
+                <label htmlFor="">End Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="date" name="endDate"  style={{marginRight:'70px',marginTop:'20px' ,padding:'18px'}} {...register("endDate",validation.endDate)}/>
+            <span style={style}>{errors.endDate?.message}</span>
+            </div>
             <Button
               type="submit"
               variant="contained"

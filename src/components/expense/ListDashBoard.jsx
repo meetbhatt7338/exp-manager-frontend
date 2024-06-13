@@ -14,6 +14,7 @@ import {
   import clsx from "clsx";
   import DeleteIcon from '@mui/icons-material/Delete';
   import EditIcon from '@mui/icons-material/Edit';  
+import dayjs from "dayjs";
   
   export const ListDashBoard = () => {
     const [rows, setrows] = useState([]);
@@ -23,14 +24,14 @@ import {
       {
         field: "title",
         headerName: "Title",
-        width: 150,
+        width: 200,
         headerClassName: "super-app-theme--header",
         // cellClassName: "super-app-theme--cell",
       },
       {
         field: "amount",
         headerName: "Amount",
-        width: 150,
+        width: 200,
         headerClassName: "super-app-theme--header",
         cellClassName: (params) => {
           if (params.value == null) {
@@ -52,51 +53,51 @@ import {
       {
         field: "mode",
         headerName: "Mode",
-        width: 150,
+        width: 200,
         headerClassName: "super-app-theme--header",
       },
       {
         field: "category",
         headerName: "Category",
-        width: 150,
-        headerClassName: "super-app-theme--header",
-      },
-      {
-        field: "action",
-        headerName: "Action",
         width: 200,
         headerClassName: "super-app-theme--header",
-        renderCell: (params) => (
-          <Grid container >
-            <Grid em>
-              <Button
-                component={Link}
-                to={`/edit/${localStorage.getItem('id')}/${params.row.id}`} // Replace with your edit route
-                variant="contained"
-                color="primary"
-                size="small"
+      },
+      // {
+      //   field: "action",
+      //   headerName: "Action",
+      //   width: 200,
+      //   headerClassName: "super-app-theme--header",
+      //   renderCell: (params) => (
+      //     <Grid container >
+      //       <Grid em>
+      //         {/* <Button
+      //           component={Link}
+      //           to={`/edit/${localStorage.getItem('id')}/${params.row.id}`} // Replace with your edit route
+      //           variant="contained"
+      //           color="primary"
+      //           size="small"
                 
-              >
-               <EditIcon/>
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="error"
-                size="small"
-                onClick={() => handleDelete(params.row.id)}
+      //         >
+      //          <EditIcon/>
+      //         </Button> */}
+      //       </Grid>
+      //       <Grid item>
+      //         {/* <Button
+      //           variant="contained"
+      //           color="error"
+      //           size="small"
+      //           onClick={() => handleDelete(params.row.id)}
                 
-              >
+      //         >
                 
-              <DeleteIcon/>
-              </Button>
-            </Grid>
-          </Grid>
-        ),
+      //         <DeleteIcon/>
+      //         </Button> */}
+      //       </Grid>
+      //     </Grid>
+      //   ),
     
         
-      },
+      // },
       
     ];
   
@@ -105,11 +106,12 @@ import {
       const res = await axios.get(`/api/expense/${id}`);
       // console.log('rows',res.data.data)
       const row = res.data.data.map((r) => {
+        const month = dayjs(r.date).format("MMM D,YYYY h:mm A");
         return {
           id: r._id,
           title: r.title,
           amount: r.amount,
-          date: r.date,
+          date: month,
           mode: r.mode,
           category: r.category?.name,
           

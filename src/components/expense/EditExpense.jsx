@@ -1,6 +1,3 @@
-// import { FaUser, FaLock } from "react-icons/fa";
-// import { MdEmail } from "react-icons/md";
-// import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer, Zoom, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,50 +17,46 @@ import {
   Button,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "@mui/material/styles";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export const EditExpense = () => {
-    const id = useParams().id;
-    const [expenseCategory, setexpenseCategory] = useState([]);
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const [expenseCategory, setExpenseCategory] = useState([]);
+  const [loading, setLoading] = useState(true);  // Add loading state
+  const [defaultValues, setDefaultValues] = useState({}); // Add default values state
+  const navigate = useNavigate();
+  
 
-  const {
-    register,
-    handleSubmit,
-   
-  } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     mode: "onTouched",
-    defaultValues: async () => {
-      const res = await axios.get("/api/expense/" +localStorage.getItem("id") +"/" +id);
-      return res.data.data[0];
-    },
   });
 
-
-  //get old data from api
-//   const getOldData = async () => {
-//     const res = await axios.get(
-//       "/api/expense/" +
-//         localStorage.getItem("id") +
-//         "/" +
-//         id
-//     );
-//     console.log(res.data.data[0]);
-//   };
-
   useEffect(() => {
-    // getOldData();
+    const getExpenseData = async () => {
+      try {
+        const res = await axios.get(`/api/expense/${localStorage.getItem("id")}/${id}`);
+        setDefaultValues(res.data.data[0]);
+        reset(res.data.data[0]);
+        setLoading(false);  // Set loading to false after data is fetched
+      } catch (error) {
+        console.error("Failed to fetch expense data", error);
+      }
+    };
+
     getExpenseCategory();
-  }, []);
+    getExpenseData();
+  }, [id, reset]);
 
   const getExpenseCategory = async () => {
-    const res = await axios.get("/api/expensecategory");
-    // console.log(res.data.data)
-    setexpenseCategory(res.data.data);
+    try {
+      const res = await axios.get("/api/expensecategory");
+      setExpenseCategory(res.data.data);
+    } catch (error) {
+      console.error("Failed to fetch expense categories", error);
+    }
   };
 
-  //data handle here..................
   const submitHandler = async (data) => {
     const expenseData = {
       title: data.title,
@@ -72,13 +65,10 @@ export const EditExpense = () => {
       user: localStorage.getItem("id"),
       mode: data.mode,
     };
-    // console.log(expenseData);
+
     try {
-      const res = await axios.put(
-        `/api/expenseupdate/${id}`,expenseData
-      );
-      console.log("res", res);
-      if (res.data.status == "success") {
+      const res = await axios.put(`/api/expenseupdate/${id}`, expenseData);
+      if (res.data.status === "success") {
         toast.success("Successfully Updated", {
           position: "top-right",
           autoClose: 1500,
@@ -95,64 +85,18 @@ export const EditExpense = () => {
         }, 2000);
       }
     } catch (error) {
-      console.log("errerer", error);
+      console.error("Error updating expense", error);
     }
-  }; // end of submithandler
-
-  const validation = {
-    firstname: {
-      required: {
-        value: true,
-        message: "*First Name is required",
-      },
-      minLength: {
-        value: 2,
-        message: "*name should be than one character",
-      },
-    },
-    lastname: {
-      required: {
-        value: true,
-        message: "*First Name is required",
-      },
-      minLength: {
-        value: 2,
-        message: "*Name should be more than one character",
-      },
-    },
-    email: {
-      required: {
-        value: true,
-        message: "*Email is required",
-      },
-    },
-    password: {
-      required: {
-        value: true,
-        message: "*Password is required",
-      },
-      minLength: {
-        value: 6,
-        message: "Password length should be more than 6 character",
-      },
-    },
-    cpassword: {
-      required: {
-        value: true,
-        message: "*Password is required",
-      },
-      minLength: {
-        value: 6,
-        message: "Password length should be more than 6 character",
-      },
-    },
   };
+
   const defaultTheme = createTheme();
+
+  if (loading) {
+    return <Typography variant="h5" align="center" sx={{ mt: 4 }}>Loading...</Typography>;
+  }
+
   return (
-    <ThemeProvider
-      theme={defaultTheme}
-      style={{ backgroundColor: "radial-gradient(circle, #ff7e5f, #feb47b)" }}
-    >
+    <ThemeProvider theme={defaultTheme}>
       <Typography
         variant="h3"
         align="center"
@@ -172,7 +116,6 @@ export const EditExpense = () => {
         draggable
         pauseOnHover
         theme="dark"
-        // transition: Zoom,
       />
       <CssBaseline />
       <Grid
@@ -193,7 +136,6 @@ export const EditExpense = () => {
           md={6}
           lg={6}
           xl={6}
-          // sx={{ ml: 1 }}
           style={{ backgroundColor: "" }}
         >
           <Box component="form" onSubmit={handleSubmit(submitHandler)}>
@@ -202,50 +144,46 @@ export const EditExpense = () => {
               fullWidth
               margin="normal"
               {...register("title")}
-            ></TextField>
+              defaultValue={defaultValues.title} // Set default value
+            />
             <TextField
               variant="outlined"
               fullWidth
               margin="normal"
               {...register("amount")}
-            ></TextField>
+              defaultValue={defaultValues.amount} // Set default value
+            />
             <FormControl fullWidth margin="normal">
-              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <InputLabel id="category-select-label">Category</InputLabel>
               <Select
-                defaultValue=""
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Category"
-                // onChange={handleChange}
+                labelId="category-select-label"
+                id="category-select"
                 {...register("category")}
+                defaultValue={defaultValues.category._id} // Set default value
               >
-                {expenseCategory?.map((category) => {
-                  return (
-                    <MenuItem key={category._id} value={category._id}>
-                      {category.name}
-                    </MenuItem>
-                  );
-                })}
+                {expenseCategory.map((category) => (
+                  <MenuItem key={category._id} value={category._id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
 
             <FormControl fullWidth margin="normal">
-              <InputLabel id="demo-simple-select-label">Mode</InputLabel>
+              <InputLabel id="mode-select-label">Mode</InputLabel>
               <Select
-                defaultValue=""
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Category"
-                // onChange={handleChangeMode}
+                labelId="mode-select-label"
+                id="mode-select"
                 {...register("mode")}
+                defaultValue={defaultValues.mode} // Set default value
               >
-                <MenuItem key={"cash"} value={"cash"}>
+                <MenuItem key="cash" value="cash">
                   Cash
                 </MenuItem>
-                <MenuItem key={"credit"} value={"credit"}>
+                <MenuItem key="credit" value="credit">
                   Credit
                 </MenuItem>
-                <MenuItem key={"debit"} value={"debit"}>
+                <MenuItem key="debit" value="debit">
                   Debit
                 </MenuItem>
               </Select>
@@ -255,22 +193,19 @@ export const EditExpense = () => {
               type="submit"
               variant="contained"
               color="secondary"
-              width = '100'
-              sx={{ mt: 2 , width: "22.5vw"}}
+              sx={{ mt: 2, width: "22.5vw" }}
             >
               UPDATE
             </Button>
             <Button
-          component={Link}
-          to="/list"
-          variant="contained"
-          color="secondary"
-          width = '200'
-
-          sx={{  mt: 2 , ml:3 ,width: "22.5vw"}}
-        >
-          BACK
-        </Button>
+              component={Link}
+              to="/list"
+              variant="contained"
+              color="secondary"
+              sx={{ mt: 2, ml: 3, width: "22.5vw" }}
+            >
+              BACK
+            </Button>
           </Box>
         </Grid>
         <Grid
@@ -280,9 +215,8 @@ export const EditExpense = () => {
           md={6}
           lg={6}
           xl={6}
-          // sx={{ ml: 1 }}
           style={{
-            backgroundImage: `url(${addImage}) `,
+            backgroundImage: `url(${addImage})`,
             height: "110vh",
             backgroundSize: "cover",
           }}

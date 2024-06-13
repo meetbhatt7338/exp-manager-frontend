@@ -27,7 +27,7 @@
 
 .wrapper{
  
-    /* width: 40vw; */
+    /* width: 40%; */
     margin:10px auto;
     background-color: transparent;
     border: 2px solid rgba(255, 255, 255, 0.6);
@@ -160,10 +160,6 @@
     background-size: 20vw;
     
 }
-.bg{
-    
-}
-
 
  .animated-text {
     font-size: 24px;

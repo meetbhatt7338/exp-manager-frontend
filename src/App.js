@@ -28,8 +28,8 @@ import { ResestPassword } from './components/user/ResestPassword';
 function App() {
   const navigate = useNavigate();
   //meet
-  // axios.defaults.baseURL = "http://localhost:4000"
-  axios.defaults.baseURL = "https://exp-manager-backend.onrender.com"
+  axios.defaults.baseURL = "http://localhost:4000"
+  // axios.defaults.baseURL = "https://exp-manager-backend.onrender.com"
   // Use useEffect to update the path whenever the URL changes
   useEffect(() => {
     const path = window.location.pathname;
@@ -38,31 +38,31 @@ function App() {
 
   return (
     <div>
-      {window.location.pathname === '/login' ||window.location.pathname === '/signup'|| window.location.pathname === '' ? null : <Nav />}
+      {window.location.pathname === '/login' || window.location.pathname === '/signup' || window.location.pathname === '' ? null : <Nav />}
       <Routes>
         <Route path='/' element={<LandingPage />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/signup' element={<SingUp />}></Route>
-        <Route element={<ProtectedRoute/>}>
-        <Route path='/add' element={<AddCategory />}></Route>
-        <Route path='/list' element={<ListCategory />}></Route>
-        <Route path='/edit/:uid/:id' element={<EditExpense />}></Route>
-        <Route path='/dashboard' element={<Dashboard />}></Route>
-        <Route path='/goal' element={<AddGaol />}></Route>
-        <Route path='/viewgoal' element={<GoalList />}></Route>
-        <Route path='/individualgoal/:id' element={<IndividualgoalList />}></Route>
-        <Route path='/addrevenue/:id' element={<AddRevenue />}></Route>
-        <Route path='/listrevenue/:id' element={<ListRevenue />}></Route>
-        <Route path='/editrevenue/:id' element={<UpdateRevenue />}></Route>
-        <Route path='/profile' element={<Profile />}></Route>
-        <Route path='/logout' element={<Logout />}></Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path='/add' element={<AddCategory />}></Route>
+          <Route path='/list' element={<ListCategory />}></Route>
+          <Route path='/edit/:uid/:id' element={<EditExpense />}></Route>
+          <Route path='/dashboard' element={<Dashboard />}></Route>
+          <Route path='/goal' element={<AddGaol />}></Route>
+          <Route path='/viewgoal' element={<GoalList />}></Route>
+          <Route path='/individualgoal/:id' element={<IndividualgoalList />}></Route>
+          <Route path='/addrevenue/:id' element={<AddRevenue />}></Route>
+          <Route path='/listrevenue/:id' element={<ListRevenue />}></Route>
+          <Route path='/editrevenue/:id' element={<UpdateRevenue />}></Route>
+          <Route path='/profile' element={<Profile />}></Route>
+          <Route path='/logout' element={<Logout />}></Route>
         </Route>
         <Route path='/*' element={<PageNotFound />}></Route>
-        <Route path='/forgotpassword' element={<ForgotPassword/>}></Route>
-        <Route path='/resetpassword' element={<ResestPassword/>}></Route>
-       
+        <Route path='/forgotpassword' element={<ForgotPassword />}></Route>
+        <Route path='/resetpassword' element={<ResestPassword />}></Route>
+
       </Routes>
-      {window.location.pathname === '/login' || window.location.pathname === '/signup' ||window.location.pathname === '' || window.location.pathname === '/list' ? null : <Footer />}
+      {window.location.pathname === '/login' || window.location.pathname === '/signup' || window.location.pathname === '' || window.location.pathname === '/list' ? null : <Footer />}
 
     </div>
   );

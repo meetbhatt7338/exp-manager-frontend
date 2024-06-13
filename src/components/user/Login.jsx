@@ -29,7 +29,7 @@ export const Login = () => {
     try {
       const res = await axios.post("/api/user/login", user);
       console.log("res", res);
-      if (res.data.status == "success") {
+      if (res.data.status === "success") {
         localStorage.setItem("id", res.data.id);
         toast.success(` Welcome to Expense Manager`, {
           position: "top-right",
@@ -46,9 +46,9 @@ export const Login = () => {
         setTimeout(() => {
          
           navigate("/dashboard");
-          if (res?.data?.role?.name == "user") {
+          // if (res?.data?.role?.name == "user") {
             
-          }
+          // }
         }, 2000);
       }
     } catch (err) {
@@ -83,6 +83,7 @@ export const Login = () => {
         value: 6,
         message: "Password length should be more than 6 character",
       },
+      
     },
   };
 

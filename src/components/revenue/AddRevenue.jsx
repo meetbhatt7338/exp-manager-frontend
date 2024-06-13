@@ -18,8 +18,27 @@ import { Link, useNavigate } from "react-router-dom";
 export const AddRevenue = () => {
 
   const defaultTheme = createTheme();
-  const {register , handleSubmit ,} = useForm({mode:'onChange'})
+  const {register , handleSubmit ,formState:{errors}} = useForm({mode:'onChange'})
+  const style = {"fontSize":"14.5px","color":"red","marginLeft":"10px","marginTop":"10px","fontWeight":"normal"}
 
+  const validation = {
+    name:{
+      required:{
+        value:true,
+        message:"*Name of income required"
+      }
+    },
+    income:{
+      required:{
+        value:true,
+        message:"*Income is required"
+      },
+      pattern:{
+        value:/^[0-9]+(\.[0-9]+)?$/,
+        message:"*Income must be in number"
+      }
+    }
+  }
 
   //form data handler
   const submitHandler=async(data)=>{
@@ -82,6 +101,7 @@ export const AddRevenue = () => {
       >
         ADD REVENUE
       </Typography>
+      
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -126,19 +146,20 @@ export const AddRevenue = () => {
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                {...register("name")}
+                {...register("name",validation.name)}
               ></TextField>
+              <span style={style}>{errors.name?.message}</span>
               <TextField
                 label="income"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                {...register("income")}
+                {...register("income",validation.income)}
               ></TextField>
+              <span style={style}>{errors.income?.message}</span>
               
 
-             
-
+             <div>
               <Button
                 type="submit"
                 variant="contained"
@@ -158,6 +179,8 @@ export const AddRevenue = () => {
               >
                 Back
               </Button>
+              </div>
+
             </Box>
           </Grid>
           <Grid

@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import { CustomeLoader } from "../CustomeLoader";
 import Swal from "sweetalert2";
+import dayjs from "dayjs";
 
 export const ListCategory = () => {
   const [rows, setrows] = useState([]);
@@ -53,22 +54,24 @@ export const ListCategory = () => {
     {
       field: "title",
       headerName: "Title",
-      width: 150,
+      width: 250,
       headerClassName: "super-app-theme--header",
-      // cellClassName: "super-app-theme--cell",
+      cellClassName: "super-app-theme--cell",
     },
     {
       field: "amount",
       headerName: "Amount",
-      width: 150,
+      width: 200,
       headerClassName: "super-app-theme--header",
+      cellClassName: "super-app-theme--cell",
+      
       cellClassName: (params) => {
         if (params.value == null) {
           return "";
         }
 
         return clsx("super-app", {
-          negative: params.value < 0,
+          negative: params.value <= 5000,
           positive: params.value > 5000,
         });
       },
@@ -78,24 +81,32 @@ export const ListCategory = () => {
       headerName: "Date",
       width: 300,
       headerClassName: "super-app-theme--header",
+      cellClassName: "super-app-theme--cell",
+
     },
     {
       field: "mode",
       headerName: "Mode",
-      width: 150,
+      width: 200,
       headerClassName: "super-app-theme--header",
+      cellClassName: "super-app-theme--cell",
+
     },
     {
       field: "category",
       headerName: "Category",
-      width: 150,
+      width: 200,
       headerClassName: "super-app-theme--header",
+      cellClassName: "super-app-theme--cell",
+
     },
     {
       field: "action",
       headerName: "Action",
       width: 200,
       headerClassName: "super-app-theme--header",
+      cellClassName: "super-app-theme--cell",
+
       renderCell: (params) => (
         <Grid container>
           <Grid em>
@@ -130,11 +141,12 @@ export const ListCategory = () => {
     const res = await axios.get(`/api/expense/${id}`);
     // console.log("rows", res.data.data);
     const row = res.data.data.map((r) => {
+      const month = dayjs(r.date).format("MMM D,YYYY h:mm A");
       return {
         id: r._id,
         title: r.title,
         amount: r.amount,
-        date: r.date,
+        date: month,
         mode: r.mode,
         category: r.category?.name,
       };
@@ -190,26 +202,29 @@ export const ListCategory = () => {
             {/* <Grid container> */}
             <Box
               sx={{
-                height: 400,
+                height: 500,
                 width: "100%",
                 "& .super-app-theme--cell": {
-                  backgroundColor: "rgba(224, 183, 60, 0.55)",
-                  color: "#1a3e72",
-                  fontWeight: "600",
+                  // backgroundColor: "rgba(224, 183, 60, 0.55)",
+                  // color: "#1a3e72",
+                  // fontWeight: "nor",
+                  fontSize:"1rem"
                 },
                 "& .super-app.negative": {
                   // color: "rgba(255, 0,0 , 1)",
                   // fontWeight: "600",
+                  fontSize:"1rem"
                 },
                 "& .super-app.positive": {
                   color: "rgba(255, 0,0 , 0.7)",
                   fontWeight: "600",
+                  fontSize:"1rem"
                 },
                 "& .super-app-theme--header": {
                   backgroundColor: "rgba(255, 100,0 , 0.55)",
                   color: "black",
                   fontWeight: "900",
-                  fontSize: "1.1rem",
+                  fontSize: "1.2rem",
                 },
               }}
             >
